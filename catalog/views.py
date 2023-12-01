@@ -6,11 +6,12 @@ from catalog.models import Category, Product, ContactData
 
 
 def home(request):
-    context = Product.objects.all()[:5]
-
+    context = {
+        'value_one': Product.objects.all()[:5]
+    }
     print('\n', Product.objects.all()[:5], '\n')
-    #return HttpResponse(f'<h1>{context}</h1>')
-    return render(request, 'catalog/home.html')
+    
+    return render(request, 'catalog/home.html', context=context)
 
 
 def contacts(request):
@@ -24,13 +25,14 @@ def contacts(request):
         with open("log.txt", 'a', encoding="utf-8") as log_:
             log_.write(f"[{date_}]\nName - {name}\nPhone - ({phone})\n{message}\n")
 
-        context = ContactData.objects.all()
-
-    #return HttpResponse(f'<h1>{context}</h1>')
-    return render(request, 'catalog/contacts.html')
+    context = {
+        'value_one': ContactData.objects.all()
+    }
+    return render(request, 'catalog/contacts.html', context=context)
 
 
 def categories(request):
-    context = Category.objects.all()
-    #return HttpResponse(f'<h1>{context}</h1>')
-    return render(request, 'catalog/category.html')
+    context = {
+        'value_one': Category.objects.all()
+    }
+    return render(request, 'catalog/category.html', context=context)
