@@ -28,7 +28,7 @@ class Product(models.Model):
     last_modified_date = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Дата изменения', **NULLABLE)
 
     def __str__(self):
-        return f'{self.name} {self.category} {self.price}'
+        return f'{self.name}'
 
     class Meta:
         verbose_name = 'Продукт'
@@ -42,7 +42,7 @@ class ContactData(models.Model):
     date_of = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='дата', **NULLABLE)
 
     def __str__(self):
-        return f'{self.name} {self.phone}\n{self.date_of}{self.message}'
+        return f'{self.name}'
 
     class Meta:
         verbose_name = 'Контакт'
