@@ -7,8 +7,7 @@ NULLABLE = {'blank': True, 'null': True}
 class Category(models.Model):
     name = models.CharField(max_length=50, verbose_name='Наименование')
     description = models.TextField(verbose_name='Описание', **NULLABLE)
-    #created_at = models.CharField(max_length=50, verbose_name='Создано', **NULLABLE)
-    # Удалил вручную миграцию с created_at
+
 
     def __str__(self):
         return f'{self.name}'
@@ -47,3 +46,4 @@ class ContactData(models.Model):
     class Meta:
         verbose_name = 'Контакт'
         verbose_name_plural = 'Контакты'
+

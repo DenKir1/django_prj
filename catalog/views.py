@@ -2,85 +2,75 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from datetime import datetime
 
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+
 from catalog.models import Category, Product, ContactData
 
 
 def home(request):
-    context = {
-        'object_list': Product.objects.all(),
-        'title': 'Продукты',
-    }
-    print('\n', Product.objects.all()[:5], '\n')
-    
-    return render(request, 'catalog/home.html', context=context)
+    context = {"object_list": Product.objects.all(),
+               "title": "Главная"}
+    return render(request, 'catalog/home.html', context)
 
 
-def base_page(request):
-    context = {
-        'object_list': Product.objects.all(),
-        'title': 'Продукты',
-    }
-
-    return render(request, 'catalog/index.html', context)
+class CategoryListView(ListView):
+    model = Category
+    extra_context = {'title': 'Категории', }
 
 
-def contacts(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        message = request.POST.get('message')
-        date_ = datetime.now()
-        contact = ContactData.objects.create(name=name, phone=phone, message=message, date_of=date_).save()
-        print(contact)
-        with open("log.txt", 'a', encoding="utf-8") as log_:
-            log_.write(f"[{date_}]\nName - {name}\nPhone - ({phone})\n{message}\n")
-
-    context = {
-        'object_list': ContactData.objects.all(),
-        'title': 'Контакты',
-    }
-    return render(request, 'catalog/contacts.html', context=context)
+class ContactDataCreateView(CreateView):
+    model = ContactData
+    fields = ('name', 'phone', 'message',)
+    success_url = reverse_lazy('catalog:home')
 
 
-def categories(request):
-    context = {
-        'object_list': Category.objects.all(),
-        'title': 'Категории',
-    }
-    return render(request, 'catalog/category.html', context=context)
+class ProductListView(ListView):
+    model = Product
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(category=self.kwargs.get('pk'))
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(*args, **kwargs)
+
+        category = Category.objects.get(pk=self.kwargs.get('pk'))
+        context_data['title'] = f'Продукты категории - {category.name}',
+
+        return context_data
 
 
-def category_product(request, pk):
-    cat_prod = Category.objects.get(pk=pk)
-    context = {
-        'object_list': Product.objects.filter(category=pk),
-        'title': f'Продукты категории {cat_prod.name}',
-    }
-    return render(request, 'catalog/home.html', context=context)
+class ProductCreateView(CreateView):
+    model = Product
+    fields = ('name', 'description', 'image', 'category', 'price',)
+    success_url = reverse_lazy('catalog:home')
 
 
-def product_to_view(request, pk):
-    prod = Product.objects.get(pk=pk)
-    context = {
-        'object': prod,
-        'title': f'Продукт {prod.name}',
-    }
-    return render(request, 'catalog/includes/inc_product.html', context=context)
+class ProductUpdateView(UpdateView):
+    model = Product
+    fields = ('name', 'description', 'image', 'category', 'price',)
+    success_url = reverse_lazy('catalog:home')
 
 
-def create_prod(request):
-    if request.method == 'POST':
-        category = Category.objects.get(pk=request.POST.get('category'))
+class ProductDeleteView(DeleteView):
+    model = Product
+    success_url = reverse_lazy('catalog:home')
 
-        name = request.POST.get('name')
-        description = request.POST.get('description')
-        image = request.POST.get('image')
-        price = request.POST.get('price')
 
-        product = Product.objects.create(name=name, description=description, image=image, price=price, category=category).save()
-    context = {
-        'object_list': Product.objects.all(),
-        'title': 'Продукт',
-    }
-    return render(request, 'catalog/create_prod.html')
+class ProductDetailView(DetailView):
+    model = Product
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(id=self.kwargs.get('pk'))
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(*args, **kwargs)
+
+        product = Product.objects.get(pk=self.kwargs.get('pk'))
+        context_data['title'] = f'Продукт - {product.name}',
+
+        return context_data

@@ -1,0 +1,30 @@
+{% extends 'blog/base.html' %}
+{% load my_tags %}
+{% block content %}
+
+
+<div class="row">
+    {% for object in object_list %}
+    <div class="col-md-4">
+        <div class="card mb-4 box-shadow">
+            <img class="card-img-top"
+                 src={{ object.image|mediapath }}
+                 alt="Card image cap">
+            <div class="card-body">
+                <p class="card-text">{{ object|title }}</p>
+                <p class="card-text">{{ object.slug }}</p>
+                <p class="card-text">{{ object.message|cut_100 }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <a href="{% url 'blog:detail' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Просмотр</a>
+                        <a href="{% url 'blog:update' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Изменить</a>
+                        <a href="{% url 'blog:delete' object.pk %}" type="button" class="btn btn-sm btn-outline-danger">Удалить</a>
+                    </div>
+                    <small class="text-muted">{{ object.views_count }}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

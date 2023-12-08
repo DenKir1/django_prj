@@ -7,10 +7,12 @@ app_name = MainappConfig.name
 
 urlpatterns = [
     path('', home, name='home'),
-    path('contacts/', contacts, name='contacts'),
-    path('category/', categories, name='categories'),
-    path('create_prod/', create_prod, name='create_prod'),
-    path('<int:pk>/category/', category_product, name='category_product'),
-    path('<int:pk>/product/', product_to_view, name='product_to_view'),
+    path('category/<int:pk>/', ProductListView.as_view(), name='product'),
+    path('contacts/', ContactDataCreateView.as_view(), name='contacts'),
+    path('category/', CategoryListView.as_view(), name='categories'),
+    path('product/create/', ProductCreateView.as_view(), name='create'),
+    path('product/update/<int:pk>/', ProductUpdateView.as_view(), name='update'),
+    path('product/delete/<int:pk>/', ProductDeleteView.as_view(), name='delete'),
+    path('<int:pk>/product/', ProductDetailView.as_view(), name='product_detail'),
 
 ]

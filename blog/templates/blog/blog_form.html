@@ -1,0 +1,29 @@
+{% extends 'blog/base.html' %}
+{% block content %}
+<form method="post" class="row">
+    <div class="col-6">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">
+                    {% if object %}
+                    Изменить блог
+                    {% else %}
+                    Создать блог
+                    {% endif %}
+                </h4>
+            </div>
+            <div class="card-body">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-outline-success">
+                    {% if object %}
+                    Изменить
+                    {% else %}
+                    Добавить
+                    {% endif %}
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

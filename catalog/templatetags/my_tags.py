@@ -4,10 +4,10 @@ from catalog.models import Product
 
 register = template.Library()
 
+
 @register.filter()
 def mediapath(value):
     if value:
-
         return f'/media/{value}'
     return '/media/fruits.jpg'
 

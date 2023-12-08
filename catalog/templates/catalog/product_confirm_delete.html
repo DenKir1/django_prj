@@ -1,0 +1,24 @@
+{% extends 'catalog/base.html' %}
+{% block content %}
+<form method="post" class="row">
+    <div class="col-6">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">
+                    Удалить продукт {{ object }} ?
+                </h4>
+            </div>
+            <div class="card-body">
+                {% csrf_token %}
+
+                <button type="submit" class="btn btn-outline-danger">
+                    Удалить
+                </button>
+                <a href="{% url 'catalog:home' %}" type="button" class="btn btn-outline-success">
+                    Отмена
+                </a>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

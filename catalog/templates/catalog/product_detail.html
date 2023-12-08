@@ -1,0 +1,31 @@
+{% extends 'catalog/base.html' %}
+{% load my_tags %}
+{% block content %}
+
+
+<div class="col-md-10">
+
+    <div class="card mb-10 box-shadow">
+        <img class="card-img-top"
+             src={% mediapath object.image %}
+             alt="Card image cap">
+        <div class="card-body">
+            <p class="card-text">Название: {{ object|title }}</p>
+            <p class="card-text">Категория товара: {{ object.category }}</p>
+            <p class="card-text">Описание: {{ object.description }}</p>
+            <p class="card-text">Дата создания: {{ object.date_of_creation }}</p>
+            <p class="card-text">Дата изменения: {{ object.last_modified_date }}</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <a type="button" class="btn btn-sm btn-outline-secondary">Купить</a>
+                </div>
+                <small class="text-muted">Цена: {{ object.price }} РУБ</small>
+            </div>
+        </div>
+    </div>
+</div>
+<nav class="ms-5">
+    <a class="{% button_p_prod object.id %}" href="{% prev_prod object.id %}">Предыдущий продукт</a>
+    <a class="{% button_n_prod object.id %}" href="{% next_prod object.id %}">Следующий продукт</a>
+</nav>
+{% endblock %}
