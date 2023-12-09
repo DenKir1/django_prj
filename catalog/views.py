@@ -8,12 +8,6 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from catalog.models import Category, Product, ContactData
 
 
-def home(request):
-    context = {"object_list": Product.objects.all(),
-               "title": "Главная"}
-    return render(request, 'catalog/home.html', context)
-
-
 class CategoryListView(ListView):
     model = Category
     extra_context = {'title': 'Категории', }
@@ -30,14 +24,15 @@ class ProductListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        queryset = queryset.filter(category=self.kwargs.get('pk'))
+        if self.kwargs.get('pk'):
+            queryset = queryset.filter(category=self.kwargs.get('pk'))
         return queryset
 
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
-
-        category = Category.objects.get(pk=self.kwargs.get('pk'))
-        context_data['title'] = f'Продукты категории - {category.name}',
+        if self.kwargs.get('pk'):
+            category = Category.objects.get(pk=self.kwargs.get('pk'))
+            context_data['title'] = f'Продукты категории - {category.name}',
 
         return context_data
 

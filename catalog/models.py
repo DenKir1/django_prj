@@ -23,8 +23,8 @@ class Product(models.Model):
     image = models.ImageField(upload_to='products/', verbose_name='Изображение', **NULLABLE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
     price = models.IntegerField(verbose_name='Цена', **NULLABLE)
-    date_of_creation = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Дата создания', **NULLABLE)
-    last_modified_date = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Дата изменения', **NULLABLE)
+    created_at = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Дата создания', **NULLABLE)
+    updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Дата изменения', **NULLABLE)
 
     def __str__(self):
         return f'{self.name}'
@@ -38,7 +38,7 @@ class ContactData(models.Model):
     name = models.CharField(max_length=100, verbose_name='Имя')
     phone = models.CharField(max_length=20, verbose_name='Телефон', **NULLABLE)
     message = models.TextField(verbose_name='Сообщение', **NULLABLE)
-    date_of = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='дата', **NULLABLE)
+    created_at = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='дата', **NULLABLE)
 
     def __str__(self):
         return f'{self.name}'

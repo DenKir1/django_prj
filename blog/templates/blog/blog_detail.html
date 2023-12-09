@@ -13,7 +13,7 @@
             <p class="card-text">Название: {{ object|title }}</p>
             <p class="card-text">Slug: {{ object.slug }}</p>
             <p class="card-text">Сообщение: {{ object.message }}</p>
-            <p class="card-text">Дата создания: {{ object.date_of }}</p>
+            <p class="card-text">Дата создания: {{ object.created_at }}</p>
             <p class="card-text">Опубликовано:
                 {% if object.is_active %}
                 ДА

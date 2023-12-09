@@ -20,4 +20,4 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(ContactData)
 class ContactDataAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'phone', 'message', 'date_of')
+    list_display = ('id', 'name', 'phone', 'message', 'created_at')

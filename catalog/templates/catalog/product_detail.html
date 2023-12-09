@@ -13,8 +13,8 @@
             <p class="card-text">Название: {{ object|title }}</p>
             <p class="card-text">Категория товара: {{ object.category }}</p>
             <p class="card-text">Описание: {{ object.description }}</p>
-            <p class="card-text">Дата создания: {{ object.date_of_creation }}</p>
-            <p class="card-text">Дата изменения: {{ object.last_modified_date }}</p>
+            <p class="card-text">Дата создания: {{ object.created_at }}</p>
+            <p class="card-text">Дата изменения: {{ object.updated_at }}</p>
             <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                     <a type="button" class="btn btn-sm btn-outline-secondary">Купить</a>
