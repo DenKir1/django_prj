@@ -4,6 +4,7 @@
 
 
 <div class="row">
+    <p class="card-text">{{ title }}</p>
     {% for object in object_list %}
     <div class="col-md-4">
         <div class="card mb-4 box-shadow">
@@ -12,12 +13,14 @@
                  alt="Card image cap">
             <div class="card-body">
                 <p class="card-text">{{ object|title }}</p>
+                <small class="text-muted">Версия {{ object.number }}</small>
                 <p class="card-text">{{ object.description|cut_100 }}</p>
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                         <a href="{% url 'catalog:product_detail' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Просмотр</a>
                         <a href="{% url 'catalog:update' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Изменить</a>
                         <a href="{% url 'catalog:delete' object.pk %}" type="button" class="btn btn-sm btn-outline-danger">Удалить</a>
+                        <a href="{% url 'catalog:update_version' %}" type="button" class="btn btn-sm btn-outline-secondary">Версия</a>
                     </div>
                     <small class="text-muted">{{ object.price }} РУБ</small>
                 </div>

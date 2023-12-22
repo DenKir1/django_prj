@@ -5,10 +5,10 @@
         <div class="card mb-4 box-shadow">
             <div class="card-header">
                 <h4 class="my-0 font-weight-normal">
-                    {% if object %}
-                    Изменить продукт
+                    {% if object.pk %}
+                    Изменить версию
                     {% else %}
-                    Создать продукт
+                    Создать версию
                     {% endif %}
                 </h4>
             </div>
@@ -16,7 +16,7 @@
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button type="submit" class="btn btn-outline-success">
-                    {% if object %}
+                    {% if object.pk %}
                     Изменить
                     {% else %}
                     Добавить
@@ -25,20 +25,6 @@
             </div>
         </div>
     </div>
-    <div class="col-6">
-        <div class="card mb-4 box-shadow">
-            <div class="card-header">
-                <h4 class="my-0 font-weight-normal">
-                    Версия продукта
-                </h4>
-            </div>
-            <div class="card-body">
-                {{ formset.management_form }}
-                {% for form in formset.forms %}
-                    {{form.as_p}}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
+
 </form>
 {% endblock %}

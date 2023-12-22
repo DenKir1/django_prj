@@ -26,14 +26,19 @@
     </div>
     <div class="card mb-4 box-shadow">
         <div class="card-header">
-            <h4 class="my-0 font-weight-normal">Свяжитесь с нами</h4>
+            <h3 class="my-0 font-weight-normal">Свяжитесь с нами</h3>
         </div>
         <div class="card-body">
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <input type="submit">
+
             </form>
+        </div>
+        <div class="card-footer">
+
+            <input type="submit">
+
         </div>
     </div>
 </div>

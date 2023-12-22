@@ -47,3 +47,25 @@ class ContactData(models.Model):
         verbose_name = 'Контакт'
         verbose_name_plural = 'Контакты'
 
+
+class Version(models.Model):
+    activity = [(True, 'Активно'),
+                (False, 'Неактивно')]
+
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Продукт')
+    number = models.FloatField(**NULLABLE, verbose_name='Номер версии')
+    name = models.CharField(max_length=50, verbose_name='Название версии')
+    is_active = models.BooleanField(choices=activity, default=False, verbose_name='Активно')
+
+
+    def __str__(self):
+        return f'{self.number}'
+
+    class Meta:
+        verbose_name = 'версия'
+        verbose_name_plural = 'версии'
+
+
+
+
+
