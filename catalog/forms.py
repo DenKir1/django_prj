@@ -54,6 +54,3 @@ class VersionForm(StyleFormMixin, forms.ModelForm):
                 #    vers.is_active = False  #  при включении новой активной версии
                 #    vers.save()
         return cleaned_data
-
-
-

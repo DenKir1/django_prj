@@ -1,0 +1,41 @@
+{% extends 'catalog/base.html' %}
+{% block content %}
+<form method="post" enctype=multipart/form-data class="row">
+    <div class="col-6">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">Профиль</h4>
+            </div>
+            <div class="card-body">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                <button type="submit" class="btn btn-outline-success">Сохранить</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">
+                    Верификация почты
+                </h4>
+            </div>
+            <div class="card-body">
+                {% if user.is_verify %}
+                    <h5 class="my-0 font-weight-normal">
+                    Пользователь верифицирован
+                    </h5>
+                {% else %}
+                    {{ formset.management_form }}
+                    {% for form in formset.forms %}
+                        {{form.as_p}}
+                    {% endfor %}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</form>
+<a class="p-2 btn btn-outline-primary" href="{% url 'users:get_password' %}">Получить пароль на почту</a>
+{% endblock %}

@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'catalog',
-    'blog'
+    'blog',
+    'users',
 
 
 ]
@@ -143,3 +144,7 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = email_login
 EMAIL_HOST_PASSWORD = email_passw
 EMAIL_USE_SSL = True
+
+AUTH_USER_MODEL = 'users.User'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
