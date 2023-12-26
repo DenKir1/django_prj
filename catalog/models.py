@@ -20,6 +20,9 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    activity = [(True, 'Опубликовано'),
+                (False, 'Неопубликовано')]
+
     name = models.CharField(max_length=50, verbose_name='Наименование')
     description = models.TextField(verbose_name='Описание', **NULLABLE)
     image = models.ImageField(upload_to='products/', verbose_name='Изображение', **NULLABLE)
@@ -28,6 +31,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now=False, auto_now_add=True, verbose_name='Дата создания', **NULLABLE)
     updated_at = models.DateTimeField(auto_now=True, auto_now_add=False, verbose_name='Дата изменения', **NULLABLE)
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name='Создатель', **NULLABLE)
+    is_published = models.BooleanField(choices=activity, default=False, verbose_name='Статус')
 
     def __str__(self):
         return f'{self.name}'
@@ -35,6 +39,8 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
+
+        permissions = [('set_published', 'Меняет статус продукта')]
 
 
 class ContactData(models.Model):

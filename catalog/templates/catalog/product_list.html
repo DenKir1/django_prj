@@ -17,11 +17,12 @@
                 <p class="card-text">{{ object.description|cut_100 }}</p>
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                        <a href="{% url 'catalog:product_detail' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Просмотр</a>
                         {% if user.is_authenticated %}
+                            <a href="{% url 'catalog:product_detail' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Просмотр</a>
+
                             <a href="{% url 'catalog:update' object.pk %}" type="button" class="btn btn-sm btn-outline-secondary">Изменить</a>
                             <a href="{% url 'catalog:delete' object.pk %}" type="button" class="btn btn-sm btn-outline-danger">Удалить</a>
-                            <a href="{% url 'catalog:update_version' %}" type="button" class="btn btn-sm btn-outline-secondary">Версия</a>
+                            {# <a href="{% url 'catalog:update_version' %}" type="button" class="btn btn-sm btn-outline-secondary">Версия</a> #}
                         {% endif %}
                     </div>
                     <small class="text-muted">{{ object.price }} РУБ</small>

@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.forms import inlineformset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
@@ -7,7 +7,7 @@ from datetime import datetime
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from catalog.forms import ContactDataForm, ProductForm, VersionForm
+from catalog.forms import ContactDataForm, ProductForm, VersionForm, ModeratorForm
 from catalog.models import Category, Product, ContactData, Version
 
 
@@ -16,7 +16,7 @@ class CategoryListView(ListView):
     extra_context = {'title': 'Категории', }
 
 
-class ContactDataCreateView(CreateView):
+class ContactDataCreateView(LoginRequiredMixin, CreateView):
     model = ContactData
     form_class = ContactDataForm
     success_url = reverse_lazy('catalog:home')
@@ -55,6 +55,7 @@ class ProductListView(ListView):
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
+
     success_url = reverse_lazy('catalog:home')
 
     def get_context_data(self, **kwargs):
@@ -79,10 +80,19 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Product
-    form_class = ProductForm
+    #form_class = ProductForm
+    #permission_required = 'catalog.change_product'
     success_url = reverse_lazy('catalog:home')
+
+    def test_func(self):
+        permi = ('catalog.change_product',)
+        _user = self.request.user
+        _instance = self.get_object()
+        if _user == _instance.owner or _user.has_perms(permi):
+            return True
+        return self.handle_no_permission()
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -101,10 +111,26 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
             formset.save()
         return super().form_valid(form)
 
+    def get_form_class(self):
+        if self.request.user.groups.filter(name='Moderator'):
+            return ModeratorForm
+        else:
+            return ProductForm
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+
+class ProductDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Product
+
+    #permission_required = 'catalog.delete_product'
     success_url = reverse_lazy('catalog:home')
+
+    def test_func(self):
+        permi = ('catalog.delete_product',)
+        _user = self.request.user
+        _instance = self.get_object()
+        if _user == _instance.owner or _user.has_perms(permi):
+            return True
+        return self.handle_no_permission()
 
 
 class ProductDetailView(DetailView):
@@ -124,13 +150,29 @@ class ProductDetailView(DetailView):
         return context_data
 
 
-class VersionCreateView(LoginRequiredMixin, CreateView):
+class VersionCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Version
     form_class = VersionForm
     success_url = reverse_lazy('catalog:home')
 
+    def test_func(self):
+        permi = ('catalog.add_version',)
+        _user = self.request.user
+        _instance = self.get_object()
+        if _user == _instance.owner or _user.has_perms(permi):
+            return True
+        return self.handle_no_permission()
 
-class VersionUpdateView(LoginRequiredMixin, CreateView):
+
+class VersionUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Version
     form_class = VersionForm
     success_url = reverse_lazy('catalog:home')
+
+    def test_func(self):
+        permi = ('catalog.change_version',)
+        _user = self.request.user
+        _instance = self.get_object()
+        if _user == _instance.owner or _user.has_perms(permi):
+            return True
+        return self.handle_no_permission()

@@ -38,6 +38,18 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
         return cleaned_data
 
 
+class ModeratorForm(StyleFormMixin, forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ('description', 'category', 'is_published',)
+
+    def clean_description(self):
+        cleaned_data = self.cleaned_data.get('description')
+        if cleaned_data.lower() in bad_words:
+            raise forms.ValidationError('Ошибка, запретная тема!')
+        return cleaned_data
+
+
 class VersionForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Version
