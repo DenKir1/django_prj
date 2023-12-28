@@ -30,6 +30,7 @@ class ContactDataUpdateView(LoginRequiredMixin, UpdateView):
 
 class ProductListView(ListView):
     model = Product
+    #permission_required = 'catalog.set_published'
 
     def get_queryset(self):
         queryset = super().get_queryset()

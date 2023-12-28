@@ -17,6 +17,7 @@ class Category(models.Model):
     class Meta:
         verbose_name = 'Категория'
         verbose_name_plural = 'Категории'
+        permissions = [('set_category', 'Меняет категорию')]
 
 
 class Product(models.Model):
@@ -73,6 +74,7 @@ class Version(models.Model):
     class Meta:
         verbose_name = 'версия'
         verbose_name_plural = 'версии'
+        permissions = [('set_active', 'Меняет статус')]
 
 
 
