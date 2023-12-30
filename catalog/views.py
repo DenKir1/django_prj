@@ -9,11 +9,17 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 
 from catalog.forms import ContactDataForm, ProductForm, VersionForm, ModeratorForm
 from catalog.models import Category, Product, ContactData, Version
+from catalog.services import get_categories_from_cache
 
 
 class CategoryListView(ListView):
     model = Category
     extra_context = {'title': 'Категории', }
+
+    def get_object(self):
+        #задание с кешированием категорий
+        obj = get_categories_from_cache()
+        return obj
 
 
 class ContactDataCreateView(LoginRequiredMixin, CreateView):
@@ -41,7 +47,9 @@ class ProductListView(ListView):
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
         if self.kwargs.get('pk'):
-            category = Category.objects.get(pk=self.kwargs.get('pk'))
+            # задание с кешированием категорий
+            category = get_categories_from_cache()
+            category = category.get(pk=self.kwargs.get('pk'))
             context_data['title'] = f'Продукты категории - {category.name}'
             #print(context_data)
         for product in context_data['object_list']:
